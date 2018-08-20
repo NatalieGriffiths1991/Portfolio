@@ -1,0 +1,42 @@
+﻿@model IEnumerable<WebATM.Models.Account>
+@{if (User.Identity.IsAuthenticated != true)
+    {
+        Response.Redirect("/Account/Login");
+    }
+}
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Accounts Held</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.AccountNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccountType)
+        </th>
+        <th></th>
+    </tr>
+@foreach (var item in Model) {
+    if (item.GetUser == ViewBag.GetUser)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccountNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccountType)
+            </td>
+            <td>
+                @Html.ActionLink("View Balance", "Details", new { id = item.AccountID }) 
+            </td>
+        </tr>
+        }
+    }
+</table>

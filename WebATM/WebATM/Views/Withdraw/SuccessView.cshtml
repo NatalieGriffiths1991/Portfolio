@@ -1,0 +1,12 @@
+﻿<h2>Success</h2>
+@{
+    ViewBag.Title = "Success";
+}
+@using (Html.BeginForm("AccountNumber", "AccountPinNumber", "FundsToWithdraw", FormMethod.Post))
+{
+<p>Withdraw funds was successful</p>
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+
+

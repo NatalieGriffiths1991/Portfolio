@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ATMDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="AccTypes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AccountType" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AtmAccounts">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AccountNumber" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="AccountBalance" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="AppUserId" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="AccTypeId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Transactions">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TransAmount" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="TransDate" Type="datetime" Nullable="false" />
+    <Property Name="TransTypeId" Type="int" Nullable="false" />
+    <Property Name="AtmAccountId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TransTypes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TransactionType" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_AccTypeAtmAccount">
+    <End Role="AccTypes" Type="Self.AccTypes" Multiplicity="1" />
+    <End Role="AtmAccounts" Type="Self.AtmAccounts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AccTypes">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AtmAccounts">
+        <PropertyRef Name="AccTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AtmAccountTransaction">
+    <End Role="AtmAccounts" Type="Self.AtmAccounts" Multiplicity="1" />
+    <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AtmAccounts">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Transactions">
+        <PropertyRef Name="AtmAccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TransTypeTransaction">
+    <End Role="TransTypes" Type="Self.TransTypes" Multiplicity="1" />
+    <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TransTypes">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Transactions">
+        <PropertyRef Name="TransTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ATMDatabaseModelStoreContainer">
+    <EntitySet Name="AccTypes" EntityType="Self.AccTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AtmAccounts" EntityType="Self.AtmAccounts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TransTypes" EntityType="Self.TransTypes" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_AccTypeAtmAccount" Association="Self.FK_AccTypeAtmAccount">
+      <End Role="AccTypes" EntitySet="AccTypes" />
+      <End Role="AtmAccounts" EntitySet="AtmAccounts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AtmAccountTransaction" Association="Self.FK_AtmAccountTransaction">
+      <End Role="AtmAccounts" EntitySet="AtmAccounts" />
+      <End Role="Transactions" EntitySet="Transactions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TransTypeTransaction" Association="Self.FK_TransTypeTransaction">
+      <End Role="TransTypes" EntitySet="TransTypes" />
+      <End Role="Transactions" EntitySet="Transactions" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,50 @@
+﻿@model WebATM.Models.Transaction
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Transaction</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TransAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TransAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TransDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TransDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AtmAccount.AccountNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AtmAccount.AccountNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TransType.TransactionType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TransType.TransactionType)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

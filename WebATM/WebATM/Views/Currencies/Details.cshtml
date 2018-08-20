@@ -1,0 +1,42 @@
+﻿@model WebATM.Models.Currency
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Currency</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CurrencyCountry)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrencyCountry)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CurrencyName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrencyName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CurrencyExchangerate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrencyExchangerate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.CurrencyID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

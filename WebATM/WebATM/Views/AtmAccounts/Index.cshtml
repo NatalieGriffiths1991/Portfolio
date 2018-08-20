@@ -1,0 +1,49 @@
+﻿@using WebATM.ViewModels
+@model WebATM.ViewModels.AtmAccountVm
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Accounts for customer: @Model.UserName</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.AtmAccountList.First().AccountNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AtmAccountList.First().AccountBalance)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AtmAccountList.First().AccType.AccountType)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.AtmAccountList) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccountNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccountBalance)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccType.AccountType)
+        </td>
+        <td>
+            @Html.ActionLink("Make A Deposit", "Deposit", "Transactions", new { id=item.Id }, null) |
+            @Html.ActionLink("View Transactions", "TransactionIndex", "Transactions", new { id=item.Id }, null) |
+            @Html.ActionLink("Make A Quick Withdrawal", "QuickWithdrawal", "Transactions", new { id = item.Id }, null) |
+            @Html.ActionLink(" Make A Withdrawal", "Withdrawal", "Transactions", new { id = item.Id }, null)
+        </td>
+    </tr>
+}
+
+</table>
+
+@Html.ActionLink("Back to home","Index","Home")

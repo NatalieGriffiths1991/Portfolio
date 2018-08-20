@@ -1,0 +1,48 @@
+﻿@model WebATM.Models.Currency
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Currency</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CurrencyCountry)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrencyCountry)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CurrencyName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrencyName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CurrencyExchangerate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrencyExchangerate)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

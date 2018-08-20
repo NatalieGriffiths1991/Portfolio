@@ -1,0 +1,34 @@
+﻿@model WebATM.Models.Account
+@{
+    ViewBag.Title = "Create";
+}
+<h2>Create</h2>
+@using WebATM.Models;
+@using (Html.BeginForm("AccountNumber", "AccountPinNumber", "FundsToWithdraw", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    DbEntities db = new DbEntities();
+    Currency currency = new Currency();
+    if (User.Identity.IsAuthenticated != true)
+    {
+        Response.Redirect("/Account/Login");
+    }
+    <div class="form-horizontal">
+        <h4>Withdraw</h4>
+        @Html.TextBox("AccountNumber", Model.AccountNumber)
+        @Html.ValidationMessageFor(model => Model.AccountNumber, "", new { @class = "text-danger" })
+        @Html.TextBox("AccountPinNumber", Model.AccountPinNumber)
+        @Html.ValidationMessageFor(model => Model.AccountPinNumber, "", new { @class = "text-danger" })
+        @Html.CheckBox("USD", false)
+        @Html.CheckBox("EUR", false)
+        @Html.CheckBox("JPY", false)
+        @Html.CheckBox("CNY", false)
+        @Html.CheckBox("RUB", false)
+        @Html.CheckBox("HKD", false)
+        @Html.HiddenFor(model => model.AccountType, (string)@ViewBag.Error)
+        <input type="submit" value="WithdrawAmount" />
+   </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")   
+}

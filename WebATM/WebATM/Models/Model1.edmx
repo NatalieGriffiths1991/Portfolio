@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ATMDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AccTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccountType" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AtmAccounts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccountNumber" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="AccountBalance" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="AppUserId" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="AccTypeId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Transactions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TransAmount" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="TransDate" Type="datetime" Nullable="false" />
+          <Property Name="TransTypeId" Type="int" Nullable="false" />
+          <Property Name="AtmAccountId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TransTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TransactionType" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AccTypeAtmAccount">
+          <End Role="AccTypes" Type="Self.AccTypes" Multiplicity="1" />
+          <End Role="AtmAccounts" Type="Self.AtmAccounts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AtmAccounts">
+              <PropertyRef Name="AccTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AtmAccountTransaction">
+          <End Role="AtmAccounts" Type="Self.AtmAccounts" Multiplicity="1" />
+          <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AtmAccounts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="AtmAccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TransTypeTransaction">
+          <End Role="TransTypes" Type="Self.TransTypes" Multiplicity="1" />
+          <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TransTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="TransTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ATMDatabaseModelStoreContainer">
+          <EntitySet Name="AccTypes" EntityType="Self.AccTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AtmAccounts" EntityType="Self.AtmAccounts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TransTypes" EntityType="Self.TransTypes" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_AccTypeAtmAccount" Association="Self.FK_AccTypeAtmAccount">
+            <End Role="AccTypes" EntitySet="AccTypes" />
+            <End Role="AtmAccounts" EntitySet="AtmAccounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AtmAccountTransaction" Association="Self.FK_AtmAccountTransaction">
+            <End Role="AtmAccounts" EntitySet="AtmAccounts" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TransTypeTransaction" Association="Self.FK_TransTypeTransaction">
+            <End Role="TransTypes" EntitySet="TransTypes" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ATMDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AccType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccountType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AtmAccounts" Relationship="Self.FK_AccTypeAtmAccount" FromRole="AccTypes" ToRole="AtmAccounts" />
+        </EntityType>
+        <EntityType Name="AtmAccount">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccountNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AccountBalance" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="AppUserId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AccTypeId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AccType" Relationship="Self.FK_AccTypeAtmAccount" FromRole="AtmAccounts" ToRole="AccTypes" />
+          <NavigationProperty Name="Transactions" Relationship="Self.FK_AtmAccountTransaction" FromRole="AtmAccounts" ToRole="Transactions" />
+        </EntityType>
+        <EntityType Name="Transaction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TransAmount" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="TransDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TransTypeId" Type="Int32" Nullable="false" />
+          <Property Name="AtmAccountId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AtmAccount" Relationship="Self.FK_AtmAccountTransaction" FromRole="Transactions" ToRole="AtmAccounts" />
+          <NavigationProperty Name="TransType" Relationship="Self.FK_TransTypeTransaction" FromRole="Transactions" ToRole="TransTypes" />
+        </EntityType>
+        <EntityType Name="TransType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TransactionType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Transactions" Relationship="Self.FK_TransTypeTransaction" FromRole="TransTypes" ToRole="Transactions" />
+        </EntityType>
+        <Association Name="FK_AccTypeAtmAccount">
+          <End Role="AccTypes" Type="Self.AccType" Multiplicity="1" />
+          <End Role="AtmAccounts" Type="Self.AtmAccount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AtmAccounts">
+              <PropertyRef Name="AccTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AtmAccountTransaction">
+          <End Role="AtmAccounts" Type="Self.AtmAccount" Multiplicity="1" />
+          <End Role="Transactions" Type="Self.Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AtmAccounts">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="AtmAccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TransTypeTransaction">
+          <End Role="TransTypes" Type="Self.TransType" Multiplicity="1" />
+          <End Role="Transactions" Type="Self.Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TransTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="TransTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AccTypes" EntityType="Self.AccType" />
+          <EntitySet Name="AtmAccounts" EntityType="Self.AtmAccount" />
+          <EntitySet Name="Transactions" EntityType="Self.Transaction" />
+          <EntitySet Name="TransTypes" EntityType="Self.TransType" />
+          <AssociationSet Name="FK_AccTypeAtmAccount" Association="Self.FK_AccTypeAtmAccount">
+            <End Role="AccTypes" EntitySet="AccTypes" />
+            <End Role="AtmAccounts" EntitySet="AtmAccounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AtmAccountTransaction" Association="Self.FK_AtmAccountTransaction">
+            <End Role="AtmAccounts" EntitySet="AtmAccounts" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TransTypeTransaction" Association="Self.FK_TransTypeTransaction">
+            <End Role="TransTypes" EntitySet="TransTypes" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ATMDatabaseModelStoreContainer" CdmEntityContainer="dbEntities">
+          <EntitySetMapping Name="AccTypes">
+            <EntityTypeMapping TypeName="ATMDatabaseModel.AccType">
+              <MappingFragment StoreEntitySet="AccTypes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AccountType" ColumnName="AccountType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AtmAccounts">
+            <EntityTypeMapping TypeName="ATMDatabaseModel.AtmAccount">
+              <MappingFragment StoreEntitySet="AtmAccounts">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
+                <ScalarProperty Name="AccountBalance" ColumnName="AccountBalance" />
+                <ScalarProperty Name="AppUserId" ColumnName="AppUserId" />
+                <ScalarProperty Name="AccTypeId" ColumnName="AccTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Transactions">
+            <EntityTypeMapping TypeName="ATMDatabaseModel.Transaction">
+              <MappingFragment StoreEntitySet="Transactions">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TransAmount" ColumnName="TransAmount" />
+                <ScalarProperty Name="TransDate" ColumnName="TransDate" />
+                <ScalarProperty Name="TransTypeId" ColumnName="TransTypeId" />
+                <ScalarProperty Name="AtmAccountId" ColumnName="AtmAccountId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransTypes">
+            <EntityTypeMapping TypeName="ATMDatabaseModel.TransType">
+              <MappingFragment StoreEntitySet="TransTypes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
